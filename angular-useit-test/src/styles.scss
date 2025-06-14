@@ -1,1 +1,37 @@
 /* You can add global styles to this file, and also import other style files */
+/* Import Bootstrap */
+@import '~bootstrap/scss/bootstrap';
+
+/* Custom styles */
+body {
+  background-color: #f8f9fa;
+  padding-top: 20px;
+}
+
+.card {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.table {
+  margin-top: 20px;
+}
+
+.form-container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  vertical-align: text-bottom;
+  border: 0.25em solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spinner-border .75s linear infinite;
+}
+
+@keyframes spinner-border {
+  to { transform: rotate(360deg); }
+}

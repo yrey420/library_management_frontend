@@ -1,0 +1,28 @@
+<div class="row justify-content-center mt-5">
+  <div class="col-md-6 col-lg-4">
+    <div class="card">
+      <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">Login</h3>
+      </div>
+      <div class="card-body">
+        <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username"
+                   [(ngModel)]="credentials.username" name="username" required>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password"
+                   [(ngModel)]="credentials.password" name="password" required>
+          </div>
+          <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+          <button type="submit" class="btn btn-primary w-100" [disabled]="loading || !loginForm.form.valid">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Login
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
