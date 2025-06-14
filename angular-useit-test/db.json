@@ -1,0 +1,30 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "admin123",
+      "name": "John Doe",
+      "email": "john@example.com",
+      "phone": "123-456-7890",
+      "address": {
+        "street": "123 Main St",
+        "city": "New York",
+        "zipcode": "10001"
+      }
+    },
+    {
+      "id": 2,
+      "username": "jane",
+      "password": "jane123",
+      "name": "Jane Smith",
+      "email": "jane@example.com",
+      "phone": "987-654-3210",
+      "address": {
+        "street": "456 Oak Ave",
+        "city": "Los Angeles",
+        "zipcode": "90001"
+      }
+    }
+  ]
+}
