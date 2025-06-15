@@ -1,70 +1,115 @@
-<div class="login-container">
-  <mat-card class="login-card">
-    <mat-card-header>
-      <mat-card-title>
-        <mat-icon>person</mat-icon>
-        Iniciar Sesión
-      </mat-card-title>
-      <mat-card-subtitle>
-        Ingrese sus credenciales para acceder
-      </mat-card-subtitle>
-    </mat-card-header>
+<div class="login-container d-flex justify-content-center align-items-center min-vh-100 bg-light bg-gradient">
+  <div class="login-card card border-0 shadow-lg overflow-hidden" style="width: 100%; max-width: 450px;">
+    <!-- Card Header with Gradient Background -->
+    <div class="card-header bg-primary bg-gradient text-white py-4">
+      <div class="d-flex flex-column align-items-center">
+        <div class="login-icon bg-white text-primary rounded-circle d-flex align-items-center justify-content-center mb-3"
+             style="width: 70px; height: 70px;">
+          <i class="bi bi-shield-lock fs-3"></i>
+        </div>
+        <h2 class="card-title fw-bold mb-0">Iniciar Sesión</h2>
+        <p class="card-subtitle opacity-75 mb-0">Ingrese sus credenciales para acceder</p>
+      </div>
+    </div>
 
-    <mat-card-content>
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-        <!-- Campo Usuario -->
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Usuario</mat-label>
-          <input matInput type="text" formControlName="username" placeholder="Ingrese su usuario"
-            autocomplete="username" [class.error]="isFieldInvalid('username')">
-          <mat-icon matSuffix>account_circle</mat-icon>
-          <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
-            El usuario es requerido
-          </mat-error>
-          <mat-error *ngIf="loginForm.get('username')?.hasError('minlength')">
-            El usuario debe tener al menos 3 caracteres
-          </mat-error>
-        </mat-form-field>
-
-        <!-- Campo Contraseña -->
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Contraseña</mat-label>
-          <input matInput [type]="hidePassword() ? 'password' : 'text'" formControlName="password"
-            placeholder="Ingrese su contraseña" autocomplete="current-password"
-            [class.error]="isFieldInvalid('password')">
-          <mat-icon matSuffix (click)="togglePasswordVisibility()" class="password-toggle">
-            {{ hidePassword() ? 'visibility' : 'visibility_off' }}
-          </mat-icon>
-          <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
-            La contraseña es requerida
-          </mat-error>
-          <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
-            La contraseña debe tener al menos 6 caracteres
-          </mat-error>
-        </mat-form-field>
-
-        <!-- Mensaje de Error -->
-        <div *ngIf="errorMessage()" class="error-message" role="alert" aria-live="polite">
-          <mat-icon>error</mat-icon>
-          {{ errorMessage() }}
+    <div class="card-body p-4 p-lg-5">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form needs-validation" novalidate>
+        <!-- Username Field -->
+        <div class="mb-4">
+          <label for="username" class="form-label fw-semibold">Usuario</label>
+          <div class="input-group has-validation">
+            <span class="input-group-text bg-light">
+              <i class="bi bi-person text-muted"></i>
+            </span>
+            <input type="text"
+                   class="form-control form-control-lg"
+                   id="username"
+                   formControlName="username"
+                   placeholder="Ingrese su usuario"
+                   autocomplete="username"
+                   [class.is-invalid]="isFieldInvalid('username')"
+                   required>
+            <div *ngIf="isFieldInvalid('username')" class="invalid-feedback">
+              <div *ngIf="loginForm.get('username')?.hasError('required')">
+                <i class="bi bi-exclamation-circle me-1"></i> Usuario requerido
+              </div>
+              <div *ngIf="loginForm.get('username')?.hasError('minlength')">
+                <i class="bi bi-exclamation-circle me-1"></i> Mínimo 3 caracteres
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- Botón de Submit -->
-        <button mat-raised-button color="primary" type="submit" class="full-width login-button"
-          [disabled]="loginForm.invalid || loading()">
-          <span *ngIf="!loading()">Iniciar Sesión</span>
-          <mat-spinner *ngIf="loading()" diameter="20" color="accent">
-          </mat-spinner>
-          <span *ngIf="loading()" class="loading-text">Iniciando sesión...</span>
+        <!-- Password Field -->
+        <div class="mb-4">
+          <label for="password" class="form-label fw-semibold">Contraseña</label>
+          <div class="input-group has-validation">
+            <span class="input-group-text bg-light">
+              <i class="bi bi-lock text-muted"></i>
+            </span>
+            <input type="{{ hidePassword() ? 'password' : 'text' }}"
+                   class="form-control form-control-lg"
+                   id="password"
+                   formControlName="password"
+                   placeholder="Ingrese su contraseña"
+                   autocomplete="current-password"
+                   [class.is-invalid]="isFieldInvalid('password')"
+                   required>
+            <button class="btn btn-outline-secondary"
+                    type="button"
+                    (click)="togglePasswordVisibility()"
+                    [class.text-primary]="!hidePassword()">
+              <i class="bi {{ hidePassword() ? 'bi-eye' : 'bi-eye-slash' }}"></i>
+            </button>
+            <div *ngIf="isFieldInvalid('password')" class="invalid-feedback">
+              <div *ngIf="loginForm.get('password')?.hasError('required')">
+                <i class="bi bi-exclamation-circle me-1"></i> Contraseña requerida
+              </div>
+              <div *ngIf="loginForm.get('password')?.hasError('minlength')">
+                <i class="bi bi-exclamation-circle me-1"></i> Mínimo 6 caracteres
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Error Message -->
+        <div *ngIf="errorMessage()" class="alert alert-danger d-flex align-items-center mb-4">
+          <i class="bi bi-exclamation-triangle-fill me-2 flex-shrink-0"></i>
+          <div>{{ errorMessage() }}</div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit"
+                class="btn btn-primary btn-lg w-100 py-3 fw-bold mb-3 shadow-sm"
+                [disabled]="loginForm.invalid || loading()">
+          <span *ngIf="!loading()">
+            <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
+          </span>
+          <span *ngIf="loading()" class="d-flex align-items-center justify-content-center">
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Procesando...
+          </span>
         </button>
       </form>
 
-      <!-- Credenciales de prueba -->
-      <div class="demo-credentials">
-        <h4>Credenciales de prueba:</h4>
-        <p><strong>Usuario:</strong> admin | <strong>Contraseña:</strong> admin123</p>
-        <p><strong>Usuario:</strong> usuario1 | <strong>Contraseña:</strong> user123</p>
+      <!-- Demo Credentials -->
+      <div class="demo-credentials mt-4 p-3 bg-light rounded-3 border">
+        <h5 class="fw-semibold text-center mb-3 text-muted">Credenciales de prueba</h5>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="p-2 bg-white rounded-2">
+              <p class="mb-1 small"><strong class="text-primary">Usuario:</strong> admin</p>
+              <p class="mb-0 small"><strong class="text-primary">Contraseña:</strong> admin123</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="p-2 bg-white rounded-2">
+              <p class="mb-1 small"><strong class="text-primary">Usuario:</strong> usuario1</p>
+              <p class="mb-0 small"><strong class="text-primary">Contraseña:</strong> user123</p>
+            </div>
+          </div>
+        </div>
       </div>
-    </mat-card-content>
-  </mat-card>
+    </div>
+  </div>
 </div>

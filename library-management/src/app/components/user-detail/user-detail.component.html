@@ -1,150 +1,157 @@
 <div class="user-detail-container">
-  <!-- Header con navegación -->
-  <div class="header-section">
-    <button mat-raised-button (click)="goBack()" class="back-button" matTooltip="Volver a la lista de usuarios">
-      <mat-icon>arrow_back</mat-icon>
-      Volver
-    </button>
+  <!-- Header Section -->
+  <div class="header-section mb-4 d-flex align-items-center justify-content-between">
 
-    <h1 class="page-title">
-      <mat-icon>person</mat-icon>
+
+    <h1 class="page-title mb-0 text-center flex-grow-1">
+      <i class="bi bi-person-circle me-2"></i>
       Detalles del Usuario
     </h1>
+
+    <div style="width: 120px;"></div> <!-- Spacer for balance -->
   </div>
 
-  <!-- Indicador de carga -->
-  <mat-card *ngIf="userService.loading()" class="loading-card">
-    <mat-card-content>
-      <div class="loading-container">
-        <mat-spinner diameter="40"></mat-spinner>
-        <p>Cargando detalles del usuario...</p>
+  <!-- Loading State -->
+  <div *ngIf="userService.loading()" class="card loading-card mb-4 border-0 shadow-sm">
+    <div class="card-body text-center py-5">
+      <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+        <span class="visually-hidden">Cargando...</span>
       </div>
-    </mat-card-content>
-  </mat-card>
+      <h3 class="mt-4 text-primary">Cargando detalles del usuario...</h3>
+    </div>
+  </div>
 
-  <!-- Mensaje de error -->
-  <mat-card *ngIf="errorMessage && !userService.loading()" class="error-card">
-    <mat-card-content>
-      <div class="error-container">
-        <mat-icon class="error-icon">error</mat-icon>
-        <div class="error-content">
-          <h2>Error al cargar usuario</h2>
-          <p>{{ errorMessage }}</p>
-          <div class="error-actions">
-            <button mat-raised-button color="primary" (click)="retryLoad()">
-              <mat-icon>refresh</mat-icon>
+  <!-- Error State -->
+  <div *ngIf="errorMessage && !userService.loading()" class="card error-card mb-4 border-danger shadow-sm">
+    <div class="card-body">
+      <div class="d-flex align-items-start">
+        <i class="bi bi-exclamation-octagon-fill text-danger me-3 fs-2"></i>
+        <div>
+          <h2 class="text-danger mb-3">Error al cargar usuario</h2>
+          <p class="lead">{{ errorMessage }}</p>
+          <div class="d-flex gap-3 mt-4">
+            <button class="btn btn-danger" (click)="retryLoad()">
+              <i class="bi bi-arrow-repeat me-2"></i>
               Reintentar
             </button>
-            <button mat-button (click)="goBack()">
+            <button class="btn btn-outline-secondary" (click)="goBack()">
+              <i class="bi bi-arrow-left me-2"></i>
               Volver
             </button>
           </div>
         </div>
       </div>
-    </mat-card-content>
-  </mat-card>
+    </div>
+  </div>
 
-  <!-- Detalles del usuario -->
+  <!-- User Details -->
   <div *ngIf="userService.selectedUser() as user" class="user-details">
-    <!-- Tarjeta principal con información básica -->
-    <mat-card class="user-info-card">
-      <mat-card-header>
-        <div mat-card-avatar class="user-avatar">
-          <mat-icon>person</mat-icon>
+    <!-- User Profile Card -->
+    <div class="card user-profile-card mb-4 border-0 shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <div class="d-flex align-items-center">
+          <div class="user-avatar me-3 bg-white text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+            <i class="bi bi-person-fill fs-3"></i>
+          </div>
+          <div>
+            <h2 class="card-title mb-0">{{ user.name }}</h2>
+            <p class="card-subtitle mb-0 text-white-50">{{ '@' + user.username }}</p>
+          </div>
         </div>
-        <mat-card-title>{{ user.name }}</mat-card-title>
-        <mat-card-subtitle>@{{ user.username }}</mat-card-subtitle>
-      </mat-card-header>
+      </div>
 
-      <mat-card-content>
-        <div class="user-basic-info">
-          <div class="info-item">
-            <mat-icon class="info-icon">fingerprint</mat-icon>
-            <div>
-              <span class="info-label">ID de Usuario</span>
-              <span class="info-value">{{ user.id }}</span>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="info-item d-flex mb-4">
+              <div class="info-icon bg-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                <i class="bi bi-fingerprint text-primary"></i>
+              </div>
+              <div>
+                <h5 class="info-label text-muted mb-1">ID de Usuario</h5>
+                <p class="info-value fs-5 fw-bold">{{ user.id }}</p>
+              </div>
             </div>
           </div>
 
-          <mat-divider></mat-divider>
-
-          <div class="info-item">
-            <mat-icon class="info-icon">badge</mat-icon>
-            <div>
-              <span class="info-label">Rol</span>
-              <mat-chip-set>
-                <mat-chip [color]="getRoleColor(user.role)" selected>
+          <div class="col-md-6">
+            <div class="info-item d-flex mb-4">
+              <div class="info-icon bg-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                <i class="bi bi-person-badge text-primary"></i>
+              </div>
+              <div>
+                <h5 class="info-label text-muted mb-1">Rol</h5>
+                <span class="badge rounded-pill py-2 px-3 fs-6" [ngClass]="'bg-' + getRoleColor(user.role)">
                   {{ getRoleLabel(user.role) }}
-                </mat-chip>
-              </mat-chip-set>
+                </span>
+              </div>
             </div>
           </div>
         </div>
-      </mat-card-content>
-    </mat-card>
+      </div>
+    </div>
 
-    <!-- Tarjeta de información de contacto -->
-    <mat-card class="contact-info-card">
-      <mat-card-header>
-        <mat-card-title>
-          <mat-icon>contact_mail</mat-icon>
+    <!-- Contact Information Card -->
+    <div class="card contact-info-card mb-4 border-0 shadow-sm">
+      <div class="card-header bg-white">
+        <h3 class="card-title mb-0">
+          <i class="bi bi-envelope-at-fill text-primary me-2"></i>
           Información de Contacto
-        </mat-card-title>
-      </mat-card-header>
+        </h3>
+      </div>
 
-      <mat-card-content>
-        <div class="contact-info">
-          <div class="info-item">
-            <mat-icon class="info-icon">email</mat-icon>
-            <div>
-              <span class="info-label">Email</span>
-              <a [href]="'mailto:' + user.email" class="info-value email-link" matTooltip="Enviar email">
-                {{ user.email }}
-              </a>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="info-item d-flex mb-4">
+              <div class="info-icon bg-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                <i class="bi bi-envelope-fill text-primary"></i>
+              </div>
+              <div>
+                <h5 class="info-label text-muted mb-1">Email</h5>
+                <a [href]="'mailto:' + user.email" class="info-value fs-5 text-decoration-none">
+                  {{ user.email }}
+                </a>
+              </div>
             </div>
           </div>
 
-          <mat-divider></mat-divider>
-
-          <div class="info-item" *ngIf="user.phone">
-            <mat-icon class="info-icon">phone</mat-icon>
-            <div>
-              <span class="info-label">Teléfono</span>
-              <a [href]="'tel:' + user.phone" class="info-value phone-link" matTooltip="Llamar">
-                {{ user.phone }}
-              </a>
+          <div class="col-md-6" *ngIf="user.phone">
+            <div class="info-item d-flex mb-4">
+              <div class="info-icon bg-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                <i class="bi bi-telephone-fill text-primary"></i>
+              </div>
+              <div>
+                <h5 class="info-label text-muted mb-1">Teléfono</h5>
+                <a [href]="'tel:' + user.phone" class="info-value fs-5 text-decoration-none">
+                  {{ user.phone }}
+                </a>
+              </div>
             </div>
           </div>
 
-          <mat-divider *ngIf="user.phone"></mat-divider>
-
-          <div class="info-item" *ngIf="user.address">
-            <mat-icon class="info-icon">location_on</mat-icon>
-            <div>
-              <span class="info-label">Dirección</span>
-              <span class="info-value">{{ user.address }}</span>
+          <div class="col-12" *ngIf="user.address">
+            <div class="info-item d-flex">
+              <div class="info-icon bg-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                <i class="bi bi-geo-alt-fill text-primary"></i>
+              </div>
+              <div>
+                <h5 class="info-label text-muted mb-1">Dirección</h5>
+                <p class="info-value fs-5">{{ user.address }}</p>
+              </div>
             </div>
           </div>
         </div>
-      </mat-card-content>
-    </mat-card>
+      </div>
+    </div>
 
-    <!-- Acciones adicionales -->
-    <mat-card class="actions-card">
-      <mat-card-content>
-        <div class="action-buttons">
-          <button mat-raised-button color="primary" (click)="goBack()" class="action-button">
-            <mat-icon>arrow_back</mat-icon>
-            Volver a la Lista
-          </button>
+    <!-- Action Buttons -->
+    <div class="d-flex justify-content-between mt-4">
+      <button class="btn btn-outline-primary px-4 py-2" (click)="goBack()">
+        <i class="bi bi-arrow-left me-2"></i>
+        Volver a la Lista
+      </button>
 
-          <button mat-button (click)="refreshUserDetails()" [disabled]="userService.loading()" class="action-button"
-            matTooltip="Actualizar información">
-            <mat-icon>refresh</mat-icon>
-            Actualizar
-          </button>
-        </div>
-      </mat-card-content>
-    </mat-card>
+    </div>
   </div>
 </div>

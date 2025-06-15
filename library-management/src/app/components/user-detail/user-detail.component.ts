@@ -3,14 +3,9 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 // Angular Material imports
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatDividerModule } from '@angular/material/divider';
+
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
-import { MatTooltipModule } from '@angular/material/tooltip';
+
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
 
@@ -23,14 +18,7 @@ import { User } from '../../models/user.model';
   standalone: true,
   imports: [
     CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-    MatChipsModule,
-    MatDividerModule,
     MatSnackBarModule,
-    MatTooltipModule
   ],
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.scss']
@@ -40,6 +28,16 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
+  private readonly roleMap: { [key: string]: { label: string; color: string } } = {
+    admin:        { label: 'Administrador', color: 'danger' },
+    administrator:{ label: 'Administrador', color: 'danger' },
+    moderator:    { label: 'Moderador',     color: 'warning' },
+    mod:          { label: 'Moderador',     color: 'warning' },
+    user:         { label: 'Usuario',       color: 'primary' },
+    member:       { label: 'Usuario',       color: 'primary' },
+  };
+
+
 
   userService = inject(UserService);
   errorMessage: string = '';
@@ -125,37 +123,13 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   /**
    * Obtiene el color del chip según el rol del usuario
    */
-  getRoleColor(role: string): 'primary' | 'accent' | 'warn' {
-    switch (role?.toLowerCase()) {
-      case 'admin':
-      case 'administrator':
-        return 'warn';
-      case 'moderator':
-      case 'mod':
-        return 'accent';
-      case 'user':
-      case 'member':
-      default:
-        return 'primary';
-    }
+  getRoleLabel(role: string | null | undefined): string {
+    if (!role) return 'Usuario';
+    return this.roleMap[role.toLowerCase()]?.label || role;
   }
 
-  /**
-   * Obtiene la etiqueta legible del rol
-   */
-  getRoleLabel(role: string): string {
-    switch (role?.toLowerCase()) {
-      case 'admin':
-      case 'administrator':
-        return 'Administrador';
-      case 'moderator':
-      case 'mod':
-        return 'Moderador';
-      case 'user':
-      case 'member':
-        return 'Usuario';
-      default:
-        return role || 'Usuario';
-    }
+  getRoleColor(role: string | null | undefined): string {
+    if (!role) return 'primary';
+    return this.roleMap[role.toLowerCase()]?.color || 'primary';
   }
 }
