@@ -1,0 +1,130 @@
+<div class="user-list-container">
+  <!-- Header con título y búsqueda -->
+  <mat-card class="header-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>people</mat-icon>
+        Lista de Usuarios
+      </mat-card-title>
+      <mat-card-subtitle>
+        Gestione y consulte información de usuarios
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <!-- Barra de búsqueda -->
+      <div class="search-container">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Buscar usuarios</mat-label>
+          <input matInput type="text" [(ngModel)]="searchTerm" (input)="onSearchChange($event)"
+            placeholder="Buscar por nombre, email o usuario..." [disabled]="userService.loading()">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="refreshUsers()" [disabled]="userService.loading()"
+          matTooltip="Actualizar lista">
+          <mat-icon>refresh</mat-icon>
+          Actualizar
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Contenido principal -->
+  <mat-card class="content-card">
+    <!-- Indicador de carga -->
+    <div *ngIf="userService.loading()" class="loading-container" role="status" aria-label="Cargando usuarios">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Cargando usuarios...</p>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div *ngIf="errorMessage()" class="error-container" role="alert" aria-live="polite">
+      <mat-icon>error</mat-icon>
+      <div class="error-content">
+        <h3>Error al cargar usuarios</h3>
+        <p>{{ errorMessage() }}</p>
+        <button mat-raised-button color="primary" (click)="loadUsers()">
+          <mat-icon>refresh</mat-icon>
+          Reintentar
+        </button>
+      </div>
+    </div>
+
+    <!-- Tabla de usuarios -->
+    <div *ngIf="!userService.loading() && !errorMessage() && filteredUsers().length > 0" class="table-container">
+      <table mat-table [dataSource]="filteredUsers()" class="users-table">
+
+        <!-- Columna ID -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef class="id-column">ID</th>
+          <td mat-cell *matCellDef="let user" class="id-column">
+            <span class="user-id">{{ user.id }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Columna Nombre -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Nombre</th>
+          <td mat-cell *matCellDef="let user">
+            <div class="user-name">
+              <mat-icon class="user-icon">person</mat-icon>
+              <span>{{ user.name }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Columna Usuario -->
+        <ng-container matColumnDef="username">
+          <th mat-header-cell *matHeaderCellDef>Usuario</th>
+          <td mat-cell *matCellDef="let user">
+            <span class="username">{{ '@' + user.username }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Columna Email -->
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>Email</th>
+          <td mat-cell *matCellDef="let user">
+            <a [href]="'mailto:' + user.email" class="email-link">
+              {{ user.email }}
+            </a>
+          </td>
+        </ng-container>
+
+        <!-- Columna Acciones -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="actions-column">Acciones</th>
+          <td mat-cell *matCellDef="let user" class="actions-column">
+            <button mat-raised-button color="primary" (click)="viewUserDetails(user.id)"
+              [disabled]="userService.loading()" matTooltip="Ver detalles del usuario" class="details-button">
+              <mat-icon>visibility</mat-icon>
+              Detalles
+            </button>
+          </td>
+        </ng-container>
+
+        <!-- Definición de headers y filas -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="user-row" (click)="viewUserDetails(row.id)">
+        </tr>
+      </table>
+    </div>
+
+    <!-- Mensaje cuando no hay usuarios -->
+    <div *ngIf="!userService.loading() && !errorMessage() && filteredUsers().length === 0" class="no-users-container">
+      <mat-icon class="no-users-icon">people_outline</mat-icon>
+      <h3>No se encontraron usuarios</h3>
+      <p *ngIf="searchTerm">
+        No hay usuarios que coincidan con "{{ searchTerm }}"
+      </p>
+      <p *ngIf="!searchTerm">
+        No hay usuarios registrados en el sistema
+      </p>
+      <button mat-raised-button color="primary" (click)="clearSearch()" *ngIf="searchTerm">
+        <mat-icon>clear</mat-icon>
+        Limpiar búsqueda
+      </button>
+    </div>
+  </mat-card>
+</div>

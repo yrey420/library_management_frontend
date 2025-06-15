@@ -1,0 +1,27 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "admin123",
+      "email": "admin@test.com",
+      "name": "Administrador",
+      "phone": "+57 300 123 4567",
+      "address": "Bucaramanga, Santander",
+      "role": "admin"
+    },
+    {
+      "id": 2,
+      "username": "usuario1",
+      "password": "user123",
+      "email": "usuario1@test.com",
+      "name": "Juan Pérez",
+      "phone": "+57 301 234 5678",
+      "address": "Floridablanca, Santander",
+      "role": "user"
+    }
+  ],
+  "auth": {
+    "token": "fake-jwt-token-123456789"
+  }
+}
