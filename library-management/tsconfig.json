@@ -20,9 +20,7 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "typeCheckHostBindings": true,
-    "strictTemplates": true,
-    "enableIvy": true,
-    "fullTemplateTypeCheck": true,
+    "strictTemplates": true
   },
   "files": [],
   "references": [
