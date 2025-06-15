@@ -1,5 +1,5 @@
 {
-  "name": "angular-useit-test",
+  "name": "library-management",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,8 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:angular-useit-test": "node dist/angular-useit-test/server/server.mjs",
-    "server": "json-server --watch db.json --port 3000"
+    "serve:ssr:library-management": "node dist/library-management/server/server.mjs"
   },
   "private": true,
   "dependencies": {
@@ -21,9 +20,9 @@
     "@angular/router": "^20.0.0",
     "@angular/ssr": "^20.0.2",
     "express": "^5.1.0",
-    "json-server": "^1.0.0-beta.3",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
   },
   "devDependencies": {
     "@angular/build": "^20.0.2",
