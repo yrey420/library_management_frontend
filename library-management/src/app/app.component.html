@@ -1,47 +1,44 @@
-<!-- Barra de navegación principal -->
-    <mat-toolbar
-      color="primary"
-      *ngIf="authService.isAuthenticated()"
-      class="app-toolbar"
-    >
-      <span class="app-title">
-        <mat-icon>people</mat-icon>
-        Gestión de Usuarios
-      </span>
+<!-- Main navigation bar -->
+<nav class="navbar navbar-expand navbar-dark bg-primary px-3" *ngIf="authService.isAuthenticated()">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center" href="#">
+      <i class="bi bi-people-fill me-2"></i>
+      <span>Gestión de Usuarios</span>
+    </a>
 
-      <span class="spacer"></span>
-
-      <!-- Información del usuario y menú -->
-      <div class="user-info" *ngIf="authService.currentUser() as user">
-        <span class="welcome-text">
+    <div class="ms-auto d-flex align-items-center">
+      <div class="user-info d-flex align-items-center" *ngIf="authService.currentUser() as user">
+        <span class="text-white me-2">
           Bienvenido, {{ user.name }}
         </span>
 
-        <button
-          mat-icon-button
-          [matMenuTriggerFor]="userMenu"
-          class="user-menu-button"
-          aria-label="Menú de usuario"
-        >
-          <mat-icon>account_circle</mat-icon>
-        </button>
-
-        <!-- Menú desplegable del usuario -->
-        <mat-menu #userMenu="matMenu">
-          <button mat-menu-item (click)="navigateToUsers()">
-            <mat-icon>people</mat-icon>
-            <span>Lista de Usuarios</span>
+        <div class="dropdown">
+          <button class="btn btn-link text-white dropdown-toggle p-0" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle fs-4"></i>
           </button>
 
-          <button mat-menu-item (click)="logout()" class="logout-item">
-            <mat-icon>logout</mat-icon>
-            <span>Cerrar Sesión</span>
-          </button>
-        </mat-menu>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+            <li>
+              <button class="dropdown-item" (click)="navigateToUsers()">
+                <i class="bi bi-people-fill me-2"></i>
+                Lista de Usuarios
+              </button>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <button class="dropdown-item text-danger" (click)="logout()">
+                <i class="bi bi-box-arrow-right me-2"></i>
+                Cerrar Sesión
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
-    </mat-toolbar>
+    </div>
+  </div>
+</nav>
 
-    <!-- Contenido principal -->
-    <main class="app-content" [ngClass]="{'with-toolbar': authService.isAuthenticated()}">
-      <router-outlet></router-outlet>
-    </main>
+<!-- Main content -->
+<main class="container-fluid py-3" [class.mt-3]="authService.isAuthenticated()">
+  <router-outlet></router-outlet>
+</main>

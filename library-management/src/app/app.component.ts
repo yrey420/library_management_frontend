@@ -1,10 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, Router } from '@angular/router';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
+
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import '@angular/compiler'; // Import necesario para Angular 18
 import { AuthService } from './services/auth.service';
@@ -19,10 +16,6 @@ import { AuthService } from './services/auth.service';
   imports: [
     CommonModule,
     RouterOutlet,
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-    MatMenuModule,
     MatSnackBarModule
   ],
   templateUrl: './app.component.html',
